@@ -36,6 +36,7 @@ LZSwipeableViewDelegate,AVKnackBottomToolViewDelegate>
         _swipeableView.delegate = self;
         _swipeableView.backgroundColor = [UIColor colorWithHex:0xebebeb];
         _swipeableView.topCardInset = UIEdgeInsetsMake(20, 20, 20, 20);
+        _swipeableView.hidden = YES;
     }
     return _swipeableView;
 }
@@ -43,11 +44,12 @@ LZSwipeableViewDelegate,AVKnackBottomToolViewDelegate>
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     
-    [self.swipeableView reloadData];
+//    [self.swipeableView reloadData];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self.navigationController.navigationBar setBackgroundColor:[UIColor whiteColor]];
     self.view.backgroundColor = [UIColor colorWithHex:0xebebeb];
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.view.backgroundColor = [UIColor whiteColor];
@@ -67,7 +69,10 @@ LZSwipeableViewDelegate,AVKnackBottomToolViewDelegate>
         [self.cardInfoList addObject:info];
     }
     
-//    [self.swipeableView reloadData];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5* NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        self.swipeableView.hidden = NO;
+        [self.swipeableView reloadData];
+    });
 
 }
 
@@ -94,19 +99,22 @@ LZSwipeableViewDelegate,AVKnackBottomToolViewDelegate>
     return cell;
 }
 
-//- (CGSize)swipeableViewSizeForTopCard:(LZSwipeableView *)swipeableView{
-//    return CGSizeMake(300, 300);
-//}
-
 #pragma mark LZSwipeableViewDelegate
 - (NSInteger)swipeableViewMaxCardNumberWillShow:(LZSwipeableView *)swipeableView{
-    return 2;
+    return 4;
 }
 - (void)swipeableView:(LZSwipeableView *)swipeableView didTapCellAtIndex:(NSInteger)index{
 
 }
 
 - (UIView *)footerViewForSwipeableView:(LZSwipeableView *)swipeableView{
+    if(self.type == 2){
+        return [self showHeaderOrFooterView];
+    }
+    return nil;
+}
+
+- (UIView *)showHeaderOrFooterView{
     AVKnackBottomToolView *bottomView = [AVKnackBottomToolView viewFromXib];
     bottomView.superVCtl = self;
     bottomView.delegate  = self;
@@ -114,7 +122,24 @@ LZSwipeableViewDelegate,AVKnackBottomToolViewDelegate>
 }
 
 - (CGFloat)heightForFooterView:(LZSwipeableView *)swipeableView{
-    return 75;
+    if(self.type == 2){
+        return 75;
+    }
+    return 0;
+}
+
+- (UIView *)headerViewForSwipeableView:(LZSwipeableView *)swipeableView{
+    if(self.type == 1){
+        return [self showHeaderOrFooterView];
+    }
+    return nil;
+}
+
+- (CGFloat)heightForHeaderView:(LZSwipeableView *)swipeableView{
+    if(self.type == 1){
+        return 75;
+    }
+    return 0;
 }
 
 // 拉到最后一个
@@ -129,7 +154,7 @@ LZSwipeableViewDelegate,AVKnackBottomToolViewDelegate>
 
 
 - (void)swipeableView:(LZSwipeableView *)swipeableView didTopCardShow:(LZSwipeableViewCell *)topCell{
-    self.topCell = topCell;
+
 }
 
 
@@ -148,7 +173,12 @@ LZSwipeableViewDelegate,AVKnackBottomToolViewDelegate>
 }
 
 - (void)knackBottomToolViewDidShareBtnClick:(AVCardInfo *)idInfo{
-    [self.swipeableView removeTopCardViewFromSwipe:LZSwipeableViewCellSwipeDirectionTop];
+    if (self.type == 1) {
+      [self.swipeableView removeTopCardViewFromSwipe:LZSwipeableViewCellSwipeDirectionBottom];
+    }else{
+      [self.swipeableView removeTopCardViewFromSwipe:LZSwipeableViewCellSwipeDirectionTop];
+    }
+
 }
 
 

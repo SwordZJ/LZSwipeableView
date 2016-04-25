@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface DefaultViewController : UIViewController
-
+@property (nonatomic, assign) NSInteger type;
 @end

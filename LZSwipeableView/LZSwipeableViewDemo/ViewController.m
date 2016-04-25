@@ -16,7 +16,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    self.title = @"LZSwipeableViewDemo";
     self.demoList = @[
                       @"default",
                       @"headerViewShow",
@@ -50,6 +50,7 @@
     DefaultViewController *mormalVc = [DefaultViewController new];
     mormalVc.hidesBottomBarWhenPushed = YES;
     mormalVc.title = self.demoList[indexPath.row];
+    mormalVc.type = indexPath.row;
     [self.navigationController pushViewController:mormalVc animated:YES];
 }
 

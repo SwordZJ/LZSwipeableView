@@ -743,7 +743,9 @@
     // 移除后的卡片是最后一张时调用代理方法
     if(self.cardViewArray.count == 1){ // 只有最后一张卡片的时候
         if ([self.delegate respondsToSelector:@selector(swipeableView:didLastCardShow:)]) {
-            [self.delegate swipeableView:self didLastCardShow:[self.cardViewArray lastObject]];
+            LZSwipeableViewCell *cell = [self.cardViewArray lastObject];
+            cell.isLast = YES;
+            [self.delegate swipeableView:self didLastCardShow:cell];
         }
     }
 }

@@ -41,5 +41,5 @@
 
 @interface UIButton (LZSwipeCategory)
 // 注意使用此方法 控制器必须实现按钮点击事件方法 leftNavButtonClick
-+(UIBarButtonItem *)createLeftBarButtonItemWithText:(NSString *)btnTitle target:(id)target;
++(UIBarButtonItem *)createNavBarButtonItemWithText:(NSString *)btnTitle target:(id)target;
 @end
