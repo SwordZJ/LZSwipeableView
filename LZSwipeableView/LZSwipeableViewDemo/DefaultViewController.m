@@ -57,6 +57,7 @@ LZSwipeableViewDelegate,AVKnackBottomToolViewDelegate>
     self.swipeableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.swipeableView registerClass:[AVSwipeCardCell class] forCellReuseIdentifier:NSStringFromClass([AVSwipeCardCell class])];
     
+    // 使用xib时请使用以下方法
 //    [self.swipeableView registerNibName:NSStringFromClass([AVSwipeCardCell class]) forCellReuseIdentifier:NSStringFromClass([AVSwipeCardCell class])];
     
     for (int i = 0; i < 100; i++) {
