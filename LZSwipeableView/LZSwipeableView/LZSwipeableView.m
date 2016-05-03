@@ -73,19 +73,6 @@
 
 
 - (void)setup{
-    // 设置阴影
-//    self.layer.shadowColor = [UIColor blackColor].CGColor; // 设置阴影颜色
-//    self.layer.shadowOpacity = 0.25; // 设置阴影不透明度
-//    self.layer.shadowOffset = CGSizeMake(0, 5); // 设置阴影位置偏差
-//    self.layer.shadowRadius = 5.0; // 设置阴影圆角半径
-    
-    // 内容容器视图
-    self.contentView = [UIView new];
-    [self addSubview:self.contentView];
-    
-//    self.contentView.layer.cornerRadius = 5;
-//    self.contentView.layer.masksToBounds = YES;
-    
     pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
     [self addGestureRecognizer:pan];
 }
@@ -719,6 +706,11 @@
     // 当cell被移除时重新刷新视图
     [self.reuseCardViewArray addObject:cell];
     
+    // 通知代理 移除了当前cell
+    if ([self.delegate respondsToSelector:@selector(swipeableView:didCardRemovedAtIndex:)]) {
+        [self.delegate swipeableView:self didCardRemovedAtIndex:cell.tag];
+    }
+    
     // 当前数据源还有数据 继续创建cell
     if (self.datasourceCount > self.totalCardViewArrayCount) { // 当显示总数
         [self createSwipeableCardCellWithIndex:self.totalCardViewArrayCount];
@@ -727,10 +719,7 @@
     // 更新位置
     [self updateSubViews];
     
-    // 通知代理 移除了当前cell
-    if ([self.delegate respondsToSelector:@selector(swipeableView:didCardRemovedAtIndex:)]) {
-        [self.delegate swipeableView:self didCardRemovedAtIndex:cell.tag];
-    }
+
     
     
     // 移除最后一个cell的代理方法

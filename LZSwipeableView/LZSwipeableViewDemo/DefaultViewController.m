@@ -150,7 +150,7 @@ LZSwipeableViewDelegate,AVKnackBottomToolViewDelegate>
 
 
 - (void)swipeableView:(LZSwipeableView *)swipeableView didCardRemovedAtIndex:(NSInteger)index{
-    
+       NSLog(@"%zd",index); 
 }
 
 
