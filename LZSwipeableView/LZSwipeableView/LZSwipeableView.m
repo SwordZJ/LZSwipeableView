@@ -719,9 +719,6 @@
     // 更新位置
     [self updateSubViews];
     
-
-    
-    
     // 移除最后一个cell的代理方法
     if (self.cardViewArray.count == 0) { // 当前移除的cell是最后一个
         if ([self.delegate respondsToSelector:@selector(swipeableViewDidLastCardRemoved:)]) {
