@@ -21,7 +21,7 @@
 
 @interface LZSwipeableViewCell ()
 @property (nonatomic, assign) CGPoint originalPoint;
-@property (nonatomic, weak) id<LZSwipeableViewCellDelagate> delegate;
+@property (nonatomic, weak) id<LZSwipeableViewCellDelagate> LZPrivateDelegate;
 @end
 
 
@@ -218,8 +218,8 @@
 // 卡片飞走后调用代理方法
 - (void)didCellRemoveFromSuperview{
     [self removeFromSuperview];
-    if ([self.delegate respondsToSelector:@selector(swipeableViewCellDidRemoveFromSuperView:)]) {
-        [self.delegate swipeableViewCellDidRemoveFromSuperView:self];
+    if ([self.LZPrivateDelegate respondsToSelector:@selector(swipeableViewCellDidRemoveFromSuperView:)]) {
+        [self.LZPrivateDelegate swipeableViewCellDidRemoveFromSuperView:self];
     }
 }
 @end
@@ -529,7 +529,7 @@
     self.isCreating = YES;
     LZSwipeableViewCell *cell = [self.datasource swipeableView:self cellForIndex:index];
     cell.tag = index;
-    cell.delegate = self;
+    cell.LZPrivateDelegate = self;
     cell.userInteractionEnabled = NO;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
     [cell addGestureRecognizer:tap];
