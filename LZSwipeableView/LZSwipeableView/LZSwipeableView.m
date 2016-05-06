@@ -14,7 +14,7 @@
 @class LZSwipeableViewCell;
 @protocol LZSwipeableViewCellDelagate <NSObject>
 @optional
-- (void)swipeableViewCellDidRemoveFromSuperView:(LZSwipeableViewCell *)cell;
+- (void)swipeableViewCellDidRemoveFromSuperView:(LZSwipeableViewCell *)cell withDirection:(LZSwipeableViewCellSwipeDirection)direction;
 @end
 
 
@@ -154,7 +154,7 @@
         self.transform = CGAffineTransformIdentity;
         self.center = finishPoint;
     } completion:^(BOOL finished) {
-        [self didCellRemoveFromSuperview];
+        [self didCellRemoveFromSuperview:LZSwipeableViewCellSwipeDirectionLeft];
     }];
 }
 
@@ -167,7 +167,7 @@
         self.transform = CGAffineTransformIdentity;
         self.center = finishPoint;
     } completion:^(BOOL finished) {
-        [self didCellRemoveFromSuperview];
+        [self didCellRemoveFromSuperview:LZSwipeableViewCellSwipeDirectionRight];
     }];
 }
 
@@ -180,7 +180,7 @@
         self.transform = CGAffineTransformIdentity;
         self.center = finishPoint;
     } completion:^(BOOL finished) {
-        [self didCellRemoveFromSuperview];
+        [self didCellRemoveFromSuperview:LZSwipeableViewCellSwipeDirectionTop];
     }];
 }
 
@@ -193,7 +193,7 @@
         self.transform = CGAffineTransformIdentity;
         self.center = finishPoint;
     } completion:^(BOOL finished) {
-        [self didCellRemoveFromSuperview];
+        [self didCellRemoveFromSuperview:LZSwipeableViewCellSwipeDirectionBottom];
     }];
 }
 
@@ -216,10 +216,10 @@
 }
 
 // 卡片飞走后调用代理方法
-- (void)didCellRemoveFromSuperview{
+- (void)didCellRemoveFromSuperview:(LZSwipeableViewCellSwipeDirection)direction{
     [self removeFromSuperview];
-    if ([self.LZPrivateDelegate respondsToSelector:@selector(swipeableViewCellDidRemoveFromSuperView:)]) {
-        [self.LZPrivateDelegate swipeableViewCellDidRemoveFromSuperView:self];
+    if ([self.LZPrivateDelegate respondsToSelector:@selector(swipeableViewCellDidRemoveFromSuperView:withDirection:)]) {
+        [self.LZPrivateDelegate swipeableViewCellDidRemoveFromSuperView:self withDirection:direction];
     }
 }
 @end
@@ -702,13 +702,13 @@
 }
 
 #pragma mark - LZSwipeableViewCellDelagate
-- (void)swipeableViewCellDidRemoveFromSuperView:(LZSwipeableViewCell *)cell{
+- (void)swipeableViewCellDidRemoveFromSuperView:(LZSwipeableViewCell *)cell withDirection:(LZSwipeableViewCellSwipeDirection)direction{
     // 当cell被移除时重新刷新视图
     [self.reuseCardViewArray addObject:cell];
     
     // 通知代理 移除了当前cell
-    if ([self.delegate respondsToSelector:@selector(swipeableView:didCardRemovedAtIndex:)]) {
-        [self.delegate swipeableView:self didCardRemovedAtIndex:cell.tag];
+    if ([self.delegate respondsToSelector:@selector(swipeableView:didCardRemovedAtIndex:withDirection:)]) {
+        [self.delegate swipeableView:self didCardRemovedAtIndex:cell.tag withDirection:direction];
     }
     
     // 当前数据源还有数据 继续创建cell

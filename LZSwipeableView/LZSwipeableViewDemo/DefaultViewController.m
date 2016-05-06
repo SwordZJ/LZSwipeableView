@@ -149,8 +149,8 @@ LZSwipeableViewDelegate,AVKnackBottomToolViewDelegate>
 }
 
 
-- (void)swipeableView:(LZSwipeableView *)swipeableView didCardRemovedAtIndex:(NSInteger)index{
-       NSLog(@"%zd",index); 
+- (void)swipeableView:(LZSwipeableView *)swipeableView didCardRemovedAtIndex:(NSInteger)index withDirection:(LZSwipeableViewCellSwipeDirection)direction{
+       NSLog(@"%zd",direction);
 }
 
 

@@ -76,7 +76,7 @@ typedef enum : NSUInteger {
 /**
  *  当前移除的是哪一个卡片
  */
-- (void)swipeableView:(LZSwipeableView *)swipeableView didCardRemovedAtIndex:(NSInteger)index;
+- (void)swipeableView:(LZSwipeableView *)swipeableView didCardRemovedAtIndex:(NSInteger)index withDirection:(LZSwipeableViewCellSwipeDirection)direction;
 
 /**
  *  当前点击了哪张卡片
