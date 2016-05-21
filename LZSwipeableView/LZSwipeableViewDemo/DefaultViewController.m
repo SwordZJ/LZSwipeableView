@@ -57,6 +57,10 @@ LZSwipeableViewDelegate,AVKnackBottomToolViewDelegate>
     self.swipeableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.swipeableView registerClass:[AVSwipeCardCell class] forCellReuseIdentifier:NSStringFromClass([AVSwipeCardCell class])];
     
+    self.swipeableView.bottomCardInsetHorizontalMargin = 20;
+    self.swipeableView.bottomCardInsetVerticalMargin = 20;
+    
+    
     // 使用xib时请使用以下方法
 //    [self.swipeableView registerNibName:NSStringFromClass([AVSwipeCardCell class]) forCellReuseIdentifier:NSStringFromClass([AVSwipeCardCell class])];
     
@@ -90,13 +94,14 @@ LZSwipeableViewDelegate,AVKnackBottomToolViewDelegate>
 - (LZSwipeableViewCell *)swipeableView:(LZSwipeableView *)swipeableView cellForIndex:(NSInteger)index{
     AVSwipeCardCell *cell = [swipeableView dequeueReusableCellWithIdentifier:NSStringFromClass([AVSwipeCardCell class])];
     cell.cardInfo = self.cardInfoList[index];
-    cell.backgroundColor = [UIColor randomColor];
+    cell.backgroundColor = [UIColor orangeColor];
     return cell;
 }
 
 - (LZSwipeableViewCell *)swipeableView:(LZSwipeableView *)swipeableView substituteCellForIndex:(NSInteger)index{
-    AVSwipeCardCell *cell = [[AVSwipeCardCell alloc] init];
+    AVSwipeCardCell *cell = [[AVSwipeCardCell alloc] initWithReuseIdentifier:@""];
     cell.cardInfo = self.cardInfoList[index];
+    cell.backgroundColor = [UIColor orangeColor];
     return cell;
 }
 

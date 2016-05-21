@@ -432,7 +432,6 @@
     CGFloat cardTopMargin = self.cardTopMargin;
     CGFloat cardBottomMargin = self.cardBottomMargin;
     CGFloat bottomCardVerticalInsetMargin = self.bottomCardInsetVerticalMargin;
-    
     CGSize normalTopCardSize = CGSizeMake(self.containerView.width - cardLeftMargin - cardRightMargin, self.containerView.height - cardTopMargin - cardBottomMargin - (self.maxCardsShowNumber - 1) * bottomCardVerticalInsetMargin);
     return CGRectMake(cardLeftMargin, cardTopMargin, normalTopCardSize.width, normalTopCardSize.height);
 }
@@ -472,8 +471,8 @@
             }
             cell.userInteractionEnabled = YES;
         }
-        CGSize cellSize = CGSizeMake(size.width - (self.cardLeftMargin + self.cardRightMargin) * i, size.height * (size.width - (self.cardLeftMargin + self.cardRightMargin) * i) / size.width);
-        CGFloat x = point.x + i * self.cardLeftMargin;
+        CGSize cellSize = CGSizeMake(size.width -  self.bottomCardInsetHorizontalMargin * 2 * i, size.height * (size.width - self.bottomCardInsetHorizontalMargin * 2 * i) / size.width);
+        CGFloat x = point.x + i * self.bottomCardInsetHorizontalMargin;
         CGFloat y = point.y + self.bottomCardInsetVerticalMargin * i + size.height - cellSize.height;
         cell.frame = CGRectMake(x, y, cellSize.width, cellSize.height);
     }
@@ -503,6 +502,7 @@
     
     [self layoutCardViews];
     
+    CGSize size = [self getTopCardFrame].size;
     // 添加屏幕截图
     for (int index = 0; index < self.cardViewArray.count; index++) {
         if (index != 0) {
@@ -510,12 +510,7 @@
                 LZSwipeableViewCell *cell = self.cardViewArray[index];
                 LZSwipeableViewCell *subCell = [self.delegate swipeableView:self substituteCellForIndex:cell.tag];
                 // 若是设置过阴影效果 需要在此处将阴影效果去除
-//                subCell.layer.shadowColor = [UIColor clearColor].CGColor; // 设置阴影颜色
-//                subCell.layer.shadowOpacity = 0; // 设置阴影不透明度
-//                subCell.layer.shadowOffset = CGSizeMake(0, 0); // 设置阴影位置偏差
-//                subCell.layer.shadowRadius = 0; // 设置阴影圆角半径
-//                subCell.frame = CGRectMake(0, 0, size.width, size.height);
-                
+                subCell.frame = CGRectMake(0, 0, size.width, size.height);
                 [subCell setNeedsLayout];
                 [subCell layoutIfNeeded];
                 [cell addSnapshotView:subCell.snapshotView];
@@ -548,6 +543,7 @@
 
 - (void)layoutHeaderFooterContainerViewFrame{
     // 头部视图存在
+    
     if (self.headerView) {
         if([self.delegate respondsToSelector:@selector(heightForHeaderView:)]){
             self.headerView.height = [self.delegate heightForHeaderView:self];
@@ -590,10 +586,6 @@
         LZSwipeableViewCell *cell = self.cardViewArray[i];
         if ([self.delegate respondsToSelector:@selector(swipeableView:substituteCellForIndex:)]) {
             LZSwipeableViewCell *subCell = [self.delegate swipeableView:self substituteCellForIndex:cell.tag];
-            subCell.layer.shadowColor = [UIColor clearColor].CGColor; // 设置阴影颜色
-            subCell.layer.shadowOpacity = 0; // 设置阴影不透明度
-            subCell.layer.shadowOffset = CGSizeMake(0, 0); // 设置阴影位置偏差
-            subCell.layer.shadowRadius = 0; // 设置阴影圆角半径
             subCell.frame = CGRectMake(0, 0, size.width, size.height);
             [subCell setNeedsLayout];
             [subCell layoutIfNeeded];
@@ -606,13 +598,13 @@
         for (int i = 0; i < self.cardViewArray.count; i++) {
             LZSwipeableViewCell *cell = self.cardViewArray[i];
             if (i == self.cardViewArray.count - 1) {
-                CGSize cellSize = CGSizeMake(size.width - (self.cardLeftMargin + self.cardRightMargin) * i, size.height * (size.width - (self.cardLeftMargin + self.cardRightMargin) * i) / size.width);
-                CGFloat x = point.x + i * self.cardLeftMargin;
+                CGSize cellSize = CGSizeMake(size.width -  self.bottomCardInsetHorizontalMargin * 2 * i, size.height * (size.width - self.bottomCardInsetHorizontalMargin * 2 * i) / size.width);
+                CGFloat x = point.x + i * self.bottomCardInsetHorizontalMargin;
                 CGFloat y = point.y + self.bottomCardInsetVerticalMargin * i + size.height - cellSize.height;
                 cell.frame = CGRectMake(x, y, cellSize.width, cellSize.height);
             }else{ // 其余卡片
-                CGSize cellSize = CGSizeMake(size.width - (self.cardLeftMargin + self.cardRightMargin) * (i + 1), size.height * (size.width - (self.cardLeftMargin + self.cardRightMargin) * (i + 1)) / size.width);
-                CGFloat x = point.x + (i + 1) * self.cardLeftMargin;
+                CGSize cellSize = CGSizeMake(size.width -  self.bottomCardInsetHorizontalMargin * 2 * (i + 1), size.height * (size.width - self.bottomCardInsetHorizontalMargin * 2 * (i + 1)) / size.width);
+                CGFloat x = point.x + i * self.bottomCardInsetHorizontalMargin;
                 CGFloat y = point.y + self.bottomCardInsetVerticalMargin * (i + 1) + size.height - cellSize.height;
                 cell.frame = CGRectMake(x, y, cellSize.width, cellSize.height);
             }
@@ -629,8 +621,8 @@
                      animations:^{
                          for (int i = 0; i < self.cardViewArray.count; i++) {
                              LZSwipeableViewCell *cell = self.cardViewArray[i];
-                             CGSize cellSize = CGSizeMake(size.width - (self.cardLeftMargin + self.cardRightMargin) * i, size.height * (size.width - (self.cardLeftMargin + self.cardRightMargin) * i) / size.width);
-                             CGFloat x = point.x + i * self.cardLeftMargin;
+                             CGSize cellSize = CGSizeMake(size.width -  self.bottomCardInsetHorizontalMargin * 2 * i, size.height * (size.width - self.bottomCardInsetHorizontalMargin * 2 * i) / size.width);
+                             CGFloat x = point.x + i * self.bottomCardInsetHorizontalMargin;
                              CGFloat y = point.y + self.bottomCardInsetVerticalMargin * i + size.height - cellSize.height;
                              cell.frame = CGRectMake(x, y, cellSize.width, cellSize.height);
                          }
